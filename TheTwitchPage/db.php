@@ -1,7 +1,7 @@
 <?php
 //Comentario
-$mysqli= new mysqli('localhost', 'webmaster', 'ffsquall', 'Twitch')
-or die('Error: ' . $db->connect_error);
+include('connect.php');
+$mysqli = conectar('localhost', 'webmaster', 'ffsquall', 'Twitch');
 
 $nombre = $email = $password = $password_confirm = "";
 
