@@ -1,7 +1,7 @@
 <?php
 //Comentario
-$db= mysqli_connect('localhost', 'webmaster', 'ffsquall', 'Twitch')
-or die('Error, algo mal pusiste mostro');
+$mysqli= new mysqli('localhost', 'webmaster', 'ffsquall', 'Twitch')
+or die('Error: ' . $db->connect_error);
 
 $nombre = $email = $password = $password_confirm = "";
 
@@ -27,19 +27,48 @@ function test_input($data)
  <link rel="stylesheet" href="style.css">
  </head>
  <body>
- <h2>PHP Form Validation Example</h2>
  <div class="form-style-8">
-  <h2>Login to your account</h2>
+  <h2>Login to your account</h2>     
   <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-    <input type="text" name="nombre" placeholder="Nick" />
-    <input type="email" name="email" placeholder="Email" />
-    <input type="url" name="password" placeholder="Password" />
-    <input type="url" name="password_confirm" placeholder="Reingrese Password" />
-    <input type="button" value="Send Message" />
+    <input type="text" name="nombre" placeholder="Nick">
+    <input type="text" name="email" placeholder="Email" />
+    <input type="password" name="password" id="passwooord" placeholder="Password" />
+    <input type="password" name="password_confirm" placeholder="Reingrese Password" />
+    <input type="submit" value="Submit" name="boton"/>
+    <br>
+    <li><a href="index.html">Home</a></li>
   </form>
 </div>
 <?php
-echo $nombre;
+    if (isset($_REQUEST["boton"]))
+    {
+            if ($password != $password_confirm)
+            {
+                echo "Mal password";
+                exit();
+            }
+            $chequear_mail = "SELECT email FROM usuarios WHERE email = '$email'";
+            $chequear_nick = "SELECT nombre FROM usuarios WHERE nombre = '$nombre'";
+            $result_1 = $mysqli->query($chequear_mail);
+            $result_2 = $mysqli->query($chequear_nick);
+            if ($result_1->num_rows != 0 || $result_2->num_rows != 0)
+            {
+                echo "Mail o Nick duplicado";
+                exit();
+            }else
+            {
+                $sql = "INSERT INTO usuarios (nombre, email, password) VALUES ('$nombre', '$email', '$password')";
+            }              
+            if (mysqli_query($mysqli, $sql))
+            {
+                echo "Succes!!!";
+            }else
+            {
+            echo "Error: " . $mysqli . "<br>" . mysqli_error($mysqli);
+            }
+    }
+        
+    mysqli_close($mysqli);
 ?>
    
  

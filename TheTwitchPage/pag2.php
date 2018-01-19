@@ -16,7 +16,23 @@ or die('Error: ' . $db->connect_error);
 </head>
 <body>
         <div id="wrapper">
-                <h1 class="chrome">:(</h1>
-    <p1>asdasdasdasdadassd</p1>
+                
+    <?php
+        $email = "gedoval@gmail.com";
+        $sql = "SELECT email FROM usuarios WHERE email = '$email'";
+        $rs = $mysqli->query($sql);
+        if (!$rs)
+        {
+            trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+        }else
+        {
+            $rs->data_seek(0);
+            while ($row = $rs->fetch_assoc())
+            {
+                echo $row['email'] . '<br>';
+            }
+        }
+
+    ?>
 </body>
 </html>
