@@ -26,9 +26,9 @@ function test_input($data)
  <head>
  <link rel="stylesheet" href="style.css">
  </head>
- <body>
+ <body class="fondo">
  <div class="form-style-8">
-  <h2>Login to your account</h2>     
+  <h2>Crear cuenta de usuario</h2>     
   <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
     <input type="text" name="nombre" placeholder="Nick">
     <input type="text" name="email" placeholder="Email" />
@@ -38,7 +38,7 @@ function test_input($data)
     <br>
     <li><a href="index.html">Home</a></li>
   </form>
-</div>
+
 <?php
     if (isset($_REQUEST["boton"]))
     {
@@ -71,7 +71,6 @@ function test_input($data)
     mysqli_close($mysqli);
 ?>
    
- 
-
+</div>
  </body>
  </html>

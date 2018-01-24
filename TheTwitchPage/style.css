@@ -10,6 +10,11 @@ body, html {
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+.fondo
+{
+    background: linear-gradient(to right, #ffd89b, #19547b);
+}
 .button {
     background-color: #4CAF50;
     border: none;
@@ -30,19 +35,19 @@ h1 {
     top: 30px;
 }
 
-
-
 ul.topnav {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    background-color: #333;
+    background-color: #5f03aa;
     position: fixed;
     top: 0;
     width: 100%;
 }
 
-ul.topnav li {float: left;}
+
+ul.topnav li {float: left ;}
+
 
 ul.topnav li a {
     display: block;
@@ -51,6 +56,7 @@ ul.topnav li a {
     padding: 14px 16px;
     text-decoration: none;
 }
+
 
 ul.topnav li:hover a:not(.active) {
     background-color: #D3D3D3;
@@ -81,6 +87,11 @@ ul.topnav .dropdown-content a {
 ul.topnav .dropdown:hover > .dropdown-content {
   display: block;
 }
+
+
+/* A partir de aca empieza la clase para el formulario para generar usuarios nuevos */
+
+
 
 .form-style-8{
     font-family: 'Open Sans Condensed', arial, sans;
