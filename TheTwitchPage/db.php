@@ -2,13 +2,16 @@
 //Comentario
 include('connect.php');
 $mysqli = conectar('localhost', 'webmaster', 'ffsquall', 'Twitch');
+if ($mysqli->connect_error) die($con->connect_error);
 
 $nombre = $email = $password = $password_confirm = "";
-
+$st = $mysqli->prepare('INSERT INTO usuarios (nombre, email, password) VALUES (?,?,?)');
+$st->bind_param('sss', $nombre, $email, $token);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre = test_input($_POST["nombre"]);
     $email = test_input($_POST["email"]);
-    $password = test_input($_POST["password"]);
+    $password = $_POST['password']; //test_input($_POST["password"]);
+    $token = password_hash($password, PASSWORD_DEFAULT);
     $password_confirm = test_input($_POST["password_confirm"]);
 }
 
@@ -19,7 +22,6 @@ function test_input($data)
     $data = htmlspecialchars($data);
     return $data;
 }
-
 ?>
 
 <html>
@@ -57,18 +59,12 @@ function test_input($data)
                 exit();
             }else
             {
-                $sql = "INSERT INTO usuarios (nombre, email, password) VALUES ('$nombre', '$email', '$password')";
+                $st->execute();
+                if (!$st->affected_rows) die("Error en el query");
             }              
-            if (mysqli_query($mysqli, $sql))
-            {
-                echo "Succes!!!";
-            }else
-            {
-            echo "Error: " . $mysqli . "<br>" . mysqli_error($mysqli);
-            }
     }
         
-    mysqli_close($mysqli);
+    $mysqli->close();
 ?>
    
 </div>

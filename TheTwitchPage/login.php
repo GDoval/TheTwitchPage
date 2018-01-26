@@ -1,33 +1,31 @@
 <?php
-include("connect.php"); 
+require_once("connect.php"); 
 ini_set('display_errors', 'On');
-session_start();
+//session_start();
 $db = conectar('localhost', 'webmaster', 'ffsquall', 'Twitch');
+if ($db->connect_error) die($db->connect_error);
 
-if($_SERVER["REQUEST_METHOD"] == 'POST')
+if(isset($_REQUEST['boton']))
 {
-    $usuario = mysqli_real_escape_string($db, $_POST["nombre"]);
-    $contra = mysqli_real_escape_string($db, $_POST["password"]);
-    $sql = "SELECT id FROM usuarios WHERE nombre = '$usuario' AND password = '$contra'";
-    $result = mysqli_query($db, $sql);
-    $fila = mysqli_fetch_array($result, MYSQLI_ASSOC);
-    $active = $fila['active'];
-
-    $cont = mysqli_num_rows($result);
-
-    if($cont == 1)
+    $usuario = mysql_fix_entidades($db, $_POST["nombre"]);
+    $password = mysql_fix_entidades($db, $_POST["password"]);
+    $sql = "SELECT * FROM usuarios WHERE nombre = '$usuario'";
+    $result = $db->query($sql); // se hace la query sobre la DB
+    if (!$result) die("No se pudo realizar la query: " . $db->connect_error);
+    $fila = $result->fetch_array(MYSQLI_NUM); //se crea un array con el resultado de la query
+    $asd = (string) $fila[3]; // se castea a un string para poder pasarlo como parametro a password_verify()
+    if (password_verify($password, $asd))
     {
-        session_register("usuario");
-        $_SESSION['login_user'] = $usuario;
-        header("Location: welcome.php");
-        exit();
+        session_start();
+        $_SESSION['usuario'] = $usuario; // se crea una variable dentro del array $_SESSION
+        $_SESSION['password'] = $password; //Idem
+        header('location: welcome.php');
     }else
     {
-        $error = "Usuario o contraseña inexistente";
+        die("Usuario o contraseña incorrectos");
     }
 }
-?> 
-
+?>
 <html>
  <head>
  <link rel="stylesheet" href="style.css">
@@ -35,8 +33,8 @@ if($_SERVER["REQUEST_METHOD"] == 'POST')
  <body class="fondo">
  <div class="form-style-8">
   <h2>Ingrese sus datos</h2>     
-  <form method="post" action="">
-    <input type="text" name="nombre" placeholder="Nick">
+  <form method="post" action="login.php">
+    <input type="text" name="nombre" placeholder="Nick"/>
     <input type="password" name="password"  placeholder="Password" />
     <input type="submit" value="Submit" name="boton"/>
     <br>

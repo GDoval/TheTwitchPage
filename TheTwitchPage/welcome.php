@@ -1,6 +1,9 @@
 <?php
-  include('session.php');
   session_start();
+  if (isset($_SESSION['usuario']))
+  {
+    $login_session = $_SESSION['usuario'];  |
+  }
 ?>
 <html>
    
